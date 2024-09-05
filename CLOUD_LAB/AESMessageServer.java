@@ -3,16 +3,23 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Base64;
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESMessageServer {
 
     private static final String ALGORITHM = "AES";
-    private static final String STATIC_KEY_STRING = "QvZJafkl7MLEePlcRK7lCA=="; // Static key for both server and client
 
     public static void main(String[] args) {
         try {
-            System.out.println("Server AES Key: " + STATIC_KEY_STRING);
+            // Generate AES key
+            KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
+            keyGen.init(128); // AES-128
+            SecretKey secretKey = keyGen.generateKey();
+            String keyString = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+
+            System.out.println("Server AES Key: " + keyString);
 
             ServerSocket serverSocket = new ServerSocket(12345);
             System.out.println("Server listening on port 12345...");
@@ -24,6 +31,9 @@ public class AESMessageServer {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
+                // Send AES key to client
+                out.println(keyString);
+
                 // Read encrypted message from client
                 String encryptedMessage = in.readLine();
                 System.out.println("Received encrypted message: " + encryptedMessage);
@@ -31,7 +41,7 @@ public class AESMessageServer {
                 String response;
                 try {
                     // Decrypt message
-                    String originalMessage = decryptMessage(encryptedMessage, STATIC_KEY_STRING);
+                    String originalMessage = decryptMessage(encryptedMessage, keyString);
                     response = "Message received: " + originalMessage;
                 } catch (Exception e) {
                     response = "Error decrypting message: " + e.getMessage();
