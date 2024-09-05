@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Server",
+        "type": "java",
+        "request": "launch",
+        "mainClass": "AESMessageServer",
+        "projectName": "YOUR_PROJECT_NAME"
+      },
+      {
+        "name": "Debug Client",
+        "type": "java",
+        "request": "launch",
+        "mainClass": "AESMessageClient",
+        "projectName": "YOUR_PROJECT_NAME"
+      }
+    ]
+  }
+  

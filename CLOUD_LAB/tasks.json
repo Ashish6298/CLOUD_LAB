@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Compile Server",
+        "type": "shell",
+        "command": "javac",
+        "args": [
+          "AESMessageServer.java"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$javac"]
+      },
+      {
+        "label": "Compile Client",
+        "type": "shell",
+        "command": "javac",
+        "args": [
+          "AESMessageClient.java"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$javac"]
+      },
+      {
+        "label": "Run Server",
+        "type": "shell",
+        "command": "java",
+        "args": [
+          "AESMessageServer"
+        ],
+        "dependsOn": "Compile Server",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Run Client",
+        "type": "shell",
+        "command": "java",
+        "args": [
+          "AESMessageClient"
+        ],
+        "dependsOn": "Compile Client",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      }
+    ]
+  }
+  
